@@ -25,6 +25,7 @@ Author: tjado <https://github.com/tejado>
 
 import struct
 import re
+import pdb
 
 from importlib import import_module
 from s2sphere import CellId, LatLng
@@ -42,12 +43,13 @@ def h2f(hex):
   return struct.unpack('<d', struct.pack('<Q', int(hex,16)))[0]
   
 def to_camel_case(value):
-  def camelcase():
-    while True:
-      yield str.capitalize
+    return "".join(x.capitalize() for x in value.split("_"))
+  #def camelcase():
+  #  while True:
+  #    yield str.capitalize
 
-  c = camelcase()
-  return "".join(c.next()(x) if x else '_' for x in value.split("_"))
+  #c = camelcase()
+  #return "".join(next(c)(x) if x else '_' for x in value.split("_"))
 
 def get_pos_by_name(location_name):
     prog = re.compile("^(\-?\d+\.\d+)?,\s*(\-?\d+\.\d+?)$")
@@ -81,9 +83,9 @@ def get_cellid(lat, long):
         walk.append(next.id())
         next = next.next()
         prev = prev.prev()
-    return ''.join(map(encode, sorted(walk)))
+    return b''.join(map(encode, sorted(walk)))
 
 def encode(cellid):
     output = []
     encoder._VarintEncoder()(output.append, cellid)
-    return ''.join(output)
+    return b''.join(output)

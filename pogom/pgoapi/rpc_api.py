@@ -28,14 +28,14 @@ import logging
 import requests
 import subprocess
 
-from exceptions import NotLoggedInException, ServerBusyOrOfflineException
+from .exceptions import NotLoggedInException, ServerBusyOrOfflineException
 
 from protobuf_to_dict import protobuf_to_dict
-from utilities   import f2i, h2f, to_camel_case, get_class
+from .utilities   import f2i, h2f, to_camel_case, get_class
 
-import protos.RpcEnum_pb2 as RpcEnum
-import protos.RpcEnvelope_pb2 as RpcEnvelope
-import protos.RpcSub_pb2 as RpcSub
+from .protos import RpcEnvelope_pb2 as RpcEnvelope
+from .protos import RpcSub_pb2 as RpcSub
+from .protos import RpcEnum_pb2 as RpcEnum
 
 class RpcApi:
     
@@ -118,7 +118,7 @@ class RpcApi:
         for entry in subrequest_list:
             if isinstance(entry, dict):
             
-                entry_id = entry.items()[0][0]
+                entry_id = list(entry.items())[0][0]
                 entry_content = entry[entry_id]
 
                 entry_name = RpcEnum.RequestMethod.Name(entry_id)
@@ -127,7 +127,7 @@ class RpcApi:
                 proto_classname = 'pogom.pgoapi.protos.RpcSub_pb2.' + proto_name
                 subrequest_extension = get_class(proto_classname)()
 
-                for (key, value) in entry_content.items():
+                for (key, value) in list(entry_content.items()):
                     # if isinstance(value, list):
                         # for i in value:
                             # r = getattr(subrequest_extension, key)
@@ -193,7 +193,7 @@ class RpcApi:
             if isinstance(request_entry, int):
                 entry_id = request_entry
             else:
-                entry_id =  request_entry.items()[0][0]
+                entry_id =  list(request_entry.items())[0][0]
                 
             entry_name = RpcEnum.RequestMethod.Name(entry_id)
             proto_name = to_camel_case(entry_name.lower()) + 'Response'

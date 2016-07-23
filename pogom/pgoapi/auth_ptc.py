@@ -27,8 +27,9 @@ import re
 import json
 import logging
 import requests
+import pdb
 
-from auth import Auth
+from .auth import Auth
 
 class AuthPtc(Auth):
 
@@ -52,7 +53,7 @@ class AuthPtc(Auth):
         r = self._session.get(self.PTC_LOGIN_URL, headers=head)
         
         try:
-            jdata = json.loads(r.content)
+            jdata = json.loads(r.text)
         except ValueError as e:
             self.log.error('{}... server seems to be down :('.format(str(e)))
             return False
@@ -65,11 +66,10 @@ class AuthPtc(Auth):
             'password': password[:15],
         }
         r1 = self._session.post(self.PTC_LOGIN_URL, data=data, headers=head)
-
         ticket = None
         try:
             ticket = re.sub('.*ticket=', '', r1.history[0].headers['Location'])
-        except Exception,e:
+        except Exception as e:
             try:
                 self.log.error('Could not retrieve token: %s', r1.json()['errors'][0])
             except Exception as e:
@@ -85,12 +85,12 @@ class AuthPtc(Auth):
         }
         
         r2 = self._session.post(self.PTC_LOGIN_OAUTH, data=data1)
-        access_token = re.sub('&expires.*', '', r2.content)
+        access_token = re.sub('&expires.*', '', r2.text)
         access_token = re.sub('.*access_token=', '', access_token)
 
         if '-sso.pokemon.com' in access_token:
             self.log.info('PTC Login successful')
-            self.log.debug('PTC Session Token: %s', access_token[:25])
+            self.log.debug('PTC Session Token: {}'.format(access_token[:25]))
             self._auth_token = access_token
         else:
             self.log.info('Seems not to be a PTC Session Token... login failed :(')

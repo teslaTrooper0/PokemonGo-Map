@@ -1,4 +1,4 @@
-from pgoapi      import *
+from .pgoapi      import *
 
 
 import requests.packages.urllib3

@@ -27,14 +27,14 @@ import logging
 import re
 import requests
 
-from utilities import f2i, h2f
+from .utilities import f2i, h2f
 
-from rpc_api import RpcApi
-from auth_ptc import AuthPtc
-from auth_google import AuthGoogle
-from exceptions import AuthException, NotLoggedInException, ServerBusyOrOfflineException
+from .rpc_api import RpcApi
+from .auth_ptc import AuthPtc
+from .auth_google import AuthGoogle
+from .exceptions import AuthException, NotLoggedInException, ServerBusyOrOfflineException
 
-import protos.RpcEnum_pb2 as RpcEnum
+from .protos import RpcEnum_pb2 as RpcEnum
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +89,7 @@ class PGoApi:
     
     def list_curr_methods(self):
         for i in self._req_method_list:
-            print("{} ({})".format(RpcEnum.RequestMethod.Name(i),i))
+            print(("{} ({})".format(RpcEnum.RequestMethod.Name(i),i)))
     
     def set_logger(self, logger):
         self._ = logger or logging.getLogger(__name__)
@@ -121,7 +121,7 @@ class PGoApi:
    
             return self
    
-        if func.upper() in RpcEnum.RequestMethod.keys():
+        if func.upper() in list(RpcEnum.RequestMethod.keys()):
             return function
         else:
             raise AttributeError
@@ -129,7 +129,7 @@ class PGoApi:
         
     def login(self, provider, username, password):
     
-        if not isinstance(username, basestring) or not isinstance(password, basestring):
+        if not isinstance(username, str) or not isinstance(password, str):
             raise AuthException("Username/password not correctly specified")
         
         if provider == 'ptc':
