@@ -1,6 +1,3 @@
-# I did a python3 port 
-It works on my end anyway. 
-
 # PokemonGo Map ![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/PoGoMapDev)
 
 
