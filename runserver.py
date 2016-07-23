@@ -80,4 +80,4 @@ if __name__ == '__main__':
             time.sleep(1)
         search_thread.join()
     else:
-        app.run(threaded=True, debug=args.debug, host=args.host, port=args.port)
+        app.run(threaded=True, debug=args.debug, host=args.host, port=int(args.port))
