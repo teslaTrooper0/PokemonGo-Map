@@ -11,7 +11,6 @@ from base64 import b64encode
 from .utils import get_pokemon_name, get_args
 from .transform import transform_from_wgs_to_gcj
 from .customLog import printPokemon
-import pdb
 
 args = get_args()
 db = SqliteDatabase(args.db)
