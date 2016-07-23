@@ -7,8 +7,8 @@ import math
 
 from threading import Thread, Semaphore
 
-from pgoapi import PGoApi
-from pgoapi.utilities import f2i, get_cellid
+from .pgoapi import PGoApi
+from .pgoapi.utilities import f2i, get_cellid
 
 from . import config
 from .models import parse_map
@@ -40,7 +40,7 @@ def send_map_request(api, position):
                             cell_id=get_cellid(position[0], position[1]))
         return api.call()
     except Exception as e:
-        log.warn("Uncaught exception when downloading map " + str(e))
+        log.exception("Uncaught exception when downloading map " + str(e))
         return False
 
 
@@ -92,7 +92,7 @@ def login(args, position):
 
     api.set_position(*position)
 
-    while not api.login(args.auth_service, args.username, args.password):
+    while not (api.login(args.auth_service, args.username, args.password)):
         log.info('Failed to login to Pokemon Go. Trying again.')
         time.sleep(config['REQ_SLEEP'])
 
@@ -124,6 +124,8 @@ def search_thread(args):
                 sem.release()
         else:
             log.info('Map Download failed. Trying again.')
+
+        time.sleep(config['REQ_SLEEP'])
 
     time.sleep(config['REQ_SLEEP'])
 
@@ -191,6 +193,6 @@ def search_loop(args):
 
     # This seems appropriate
     except Exception as e:
-        log.info('Crashed, waiting {:d} seconds before restarting search.'.format(args.scan_delay))
+        log.exception('Crashed, waiting {:d} seconds before restarting search.'.format(args.scan_delay))
         time.sleep(args.scan_delay)
         search_loop(args)

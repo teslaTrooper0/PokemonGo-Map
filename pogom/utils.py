@@ -9,18 +9,14 @@ import uuid
 import os
 import json
 from datetime import datetime, timedelta
-import ConfigParser
+import configparser
 
 from . import config
-from exceptions import APIKeyException
+from .exceptions import APIKeyException
 
-
-def parse_unicode(bytestring):
-    decoded_string = bytestring.decode(sys.getfilesystemencoding())
-    return decoded_string
 
 def parse_config(args):
-    Config = ConfigParser.ConfigParser()
+    Config = configparser.ConfigParser()
     Config.read(os.path.join(os.path.dirname(__file__), '../config/config.ini'))
     args.auth_service = Config.get('Authentication', 'Service')
     args.username = Config.get('Authentication', 'Username')
@@ -41,7 +37,7 @@ def get_args():
     parser.add_argument('-a', '--auth-service', type=str.lower, help='Auth Service', default='ptc')
     parser.add_argument('-u', '--username', help='Username', required=False)
     parser.add_argument('-p', '--password', help='Password', required=False)
-    parser.add_argument('-l', '--location', type=parse_unicode, help='Location, can be an address or coordinates', required=False)
+    parser.add_argument('-l', '--location', help='Location, can be an address or coordinates', required=False)
     parser.add_argument('-st', '--step-limit', help='Steps', required=False, type=int)
     parser.add_argument('-sd', '--scan-delay', help='Time delay before beginning new scan', required=False, type=int, default=1)
     parser.add_argument('-dc','--display-in-console',help='Display Found Pokemon in Console',action='store_true',default=False)
@@ -65,7 +61,7 @@ def get_args():
     else:
         if (args.username is None or args.location is None or args.step_limit is None):
             parser.print_usage()
-            print sys.argv[0] + ': error: arguments -u/--username, -l/--location, -st/--step-limit are required'
+            print((sys.argv[0] + ': error: arguments -u/--username, -l/--location, -st/--step-limit are required'))
             sys.exit(1);
 
         if args.password is None:
@@ -88,7 +84,7 @@ def insert_mock_data():
 
     detect_time = datetime.now()
 
-    for i in xrange(num_pokemon):
+    for i in range(num_pokemon):
         Pokemon.create(encounter_id=uuid.uuid4(),
                        spawnpoint_id='sp{}'.format(i),
                        pokemon_id=(i+1) % 150,
