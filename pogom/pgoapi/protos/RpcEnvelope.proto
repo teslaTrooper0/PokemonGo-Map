@@ -1,73 +1,74 @@
+syntax = "proto3";
 
 import "RpcEnum.proto";
 
 message Request {
-  required RpcEnum.RpcDirection direction = 1;
-  optional int64 rpc_id = 3;
+  RpcEnum.RpcDirection direction = 1;
+  int64 rpc_id = 3;
   repeated Requests requests = 4;
-  optional Unknown6 unknown6 = 6;
-  optional fixed64 latitude = 7;
-  optional fixed64 longitude = 8;
-  optional fixed64 altitude = 9;
-  optional AuthInfo auth = 10;
-  optional AuthTicket auth_ticket = 11;
-  optional int64 unknown12 = 12;
+  Unknown6 unknown6 = 6;
+  fixed64 latitude = 7;
+  fixed64 longitude = 8;
+  fixed64 altitude = 9;
+  AuthInfo auth = 10;
+  AuthTicket auth_ticket = 11;
+  int64 unknown12 = 12;
 
   message Requests {
-    required RpcEnum.RequestMethod type = 1;
-    optional bytes parameters = 2;
+    RpcEnum.RequestMethod type = 1;
+    bytes parameters = 2;
   }
 
   message AuthInfo {
-    required string provider = 1;
-    required JWT token = 2;
+    string provider = 1;
+    JWT token = 2;
 
     message JWT {
-      required string contents = 1;
-      required int32 unknown13  = 2;
+      string contents = 1;
+      int32 unknown13  = 2;
     }
   }
 
   message Unknown3 {
-    required string unknown4 = 1;
+    string unknown4 = 1;
   }
 
   message Unknown6 {
-    required int32 unknown1 = 1;
-    required Unknown2 unknown2 = 2;
+    int32 unknown1 = 1;
+    Unknown2 unknown2 = 2;
 
     message Unknown2 {
-      required bytes unknown1 = 1;
+      bytes unknown1 = 1;
     }
   }
 }
 
 message Response {
-  required RpcEnum.RpcDirection direction = 1;
-  optional int64 unknown2 = 2;
-  optional string api_url = 3;
-  required Unknown6 unknown6 = 6;
-  optional AuthTicket auth_ticket = 7;
+  RpcEnum.RpcDirection direction = 1;
+  int64 unknown2 = 2;
+  string api_url = 3;
+  Unknown6 unknown6 = 6;
+  AuthTicket auth_ticket = 7;
   repeated bytes responses = 100;
 
   message Unknown6 {
-    required int32 unknown1 = 1;
-    required Unknown2 unknown2 = 2;
+    int32 unknown1 = 1;
+    Unknown2 unknown2 = 2;
 
     message Unknown2 {
-      required bytes unknown1 = 1;
+      bytes unknown1 = 1;
     }
   }
 
   message Unknown7 {
-    optional bytes unknown71 = 1;
-    optional int64 unknown72 = 2;
-    optional bytes unknown73 = 3;
+    bytes unknown71 = 1;
+    int64 unknown72 = 2;
+    bytes unknown73 = 3;
   }
 }
 
 message AuthTicket {
-  optional bytes start = 1;
-  optional uint64 expire_timestamp_ms = 2;
-  optional bytes end = 3;
+  bytes start = 1;
+  uint64 expire_timestamp_ms = 2;
+  bytes end = 3;
 }
