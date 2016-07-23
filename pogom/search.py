@@ -92,7 +92,7 @@ def login(args, position):
 
     api.set_position(*position)
 
-    while not (api.login(args.auth_service, args.username, args.password)):
+    while not api.login(args.auth_service, args.username, args.password):
         log.info('Failed to login to Pokemon Go. Trying again.')
         time.sleep(config['REQ_SLEEP'])
 
