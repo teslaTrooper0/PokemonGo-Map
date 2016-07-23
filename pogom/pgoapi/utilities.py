@@ -25,7 +25,6 @@ Author: tjado <https://github.com/tejado>
 
 import struct
 import re
-import pdb
 
 from importlib import import_module
 from s2sphere import CellId, LatLng
@@ -44,12 +43,6 @@ def h2f(hex):
   
 def to_camel_case(value):
     return "".join(x.capitalize() for x in value.split("_"))
-  #def camelcase():
-  #  while True:
-  #    yield str.capitalize
-
-  #c = camelcase()
-  #return "".join(next(c)(x) if x else '_' for x in value.split("_"))
 
 def get_pos_by_name(location_name):
     prog = re.compile("^(\-?\d+\.\d+)?,\s*(\-?\d+\.\d+?)$")
